@@ -106,6 +106,7 @@
             <!-- Buttons for Reset and Adding New Art -->
             <button id="reset-button">Reset Gallery</button>
             <button id="add-art-button">Add New Artwork</button>
+            <button id="delete-art-button">Delete Selected Artworks</button>
 
             <!-- Art Gallery Section -->
             <section class="art-grid">
@@ -159,7 +160,9 @@
 
         document.getElementById('add-art-button').addEventListener('click', addArtPiece);
 
-        
+        document.getElementById('delete-art-button').addEventListener('click', deleteArts);
+
+        const grid = document.getElementsByClassName('art-grid')[0];
 
         function addArtPiece() {
             const newPanel = document.createElement('div');
@@ -177,7 +180,7 @@
             newPanel.appendChild(newImg);
             newPanel.appendChild(newTitle);
 
-            console.log(document.getElementsByClassName('art-grid')[0].appendChild(newPanel));
+            grid.appendChild(newPanel);
 
         }
 
@@ -202,6 +205,13 @@
 
         function updateCounter() {
             document.getElementById('counter').textContent = "Artworks Viewed: " + selectedCounter;
+
+            const deleteButton = document.getElementById('delete-art-button');
+            if (selectedCounter == 0) {
+                deleteButton.style.backgroundColor = '#333';
+            } else {
+                deleteButton.style.backgroundColor = 'rgb(255, 0, 0)';
+            }
         }
 
         function resetGallery() {
@@ -209,6 +219,17 @@
             for (const panel of panels) {
                 if (panel.tagName == 'DIV') {
                     panel.style.backgroundColor = whiteColor;
+                }
+            }
+            selectedCounter = 0;
+            updateCounter();
+        }
+
+        function deleteArts() {
+            const panels = document.getElementsByClassName('art-panel');
+            for (let i = panels.length - 1; i >= 0; i--) {
+                if (panels[i].style.backgroundColor == selectedColor) {
+                    grid.removeChild(panels[i]);
                 }
             }
             selectedCounter = 0;
